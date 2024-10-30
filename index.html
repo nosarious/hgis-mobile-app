@@ -8,6 +8,8 @@
     <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
     <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
     <link href="https://www.dafontfree.net/embed/cGF0cmljaWFuLXJlZ3VsYXImZGF0YS8yNi9wLzEzODA1Ny9QYXRyaWNhbi50dGY" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +46,7 @@
           </ion-content>
         </ion-popover>
         <ion-text color="white">  
-          <ion-title>HGIS Mobile Application</ion-title>
+          <ion-title>CDMI Mobile Application</ion-title>
       </ion-text>
         </ion-toolbar>
       </ion-header> 
@@ -61,7 +63,7 @@
       <ion-header>
         <ion-toolbar color="gray">
           <ion-text color="white">
-          <ion-title>Mobile Storytelling</ion-title>
+          <ion-title>CDMI Mobile App Splash Screen</ion-title>
       </ion-text>
           <ion-buttons slot="end">
             <ion-text color="white">
@@ -71,10 +73,9 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding" style="--ion-background-color: #285756">      
-          <img src="assets/dmilogo.png"/>
-          <p style="color: white; font-size: 18px;">Here you can use your mobile device to explore the Keweenaw’s landscape through historic maps and stories shared by others.</p>
-          <p style="color: white; font-size: 18px;">You can also share your own story right from your device.
-          Looking for historical data about people and places? Use the Keweenaw Time Traveler on your desktop to connect these maps with millions of other records about the Keweenaw’s past, including census, city directories, school records and more. 
+          <img src="assets/cdmibanner.png"/>
+          <p style="color: white; font-size: 18px;">This is an example historical GIS mobile application for the CDMI.</p>
+          <p style="color: white; font-size: 18px;">Participants can plug in in their own GIS layers and easily change stlying components to create their own historical GIS mobile application.  
            </p>          
       </ion-content>
     </ion-modal>                 
@@ -100,26 +101,26 @@
           </ion-content>
         </ion-tab>
 
-        <ion-tab tab="stories">         
-
+        <ion-tab tab="stories"> 
         <ion-content fullscreen class="ion-padding" scroll-y="true">
-        <ion-slides class="swiper-no-swiping">
-          <ion-slide>
-            <div class="slide">              
-              <h2>Share your Story</h2>
+          <!-- Slider main container -->
+          <div class="swiper">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+              <!-- Slides -->
+              <div class="swiper-slide">
+                <h2>Share your Story</h2>
               <p>
                 Select where you want to <b>Share a Story.</b> 
               </p>
-               <ion-button expand="block" id="locOpt">At my current location<ion-icon slot="start" name="locate-outline"></ion-icon></ion-button>
-        <ion-button expand="block" id="mapOpt">From a location on the map<ion-icon slot="start" name="location-outline"></ion-icon></ion-button>
+               <ion-button expand="block"  color="medium" id="locOpt">At my current location<ion-icon slot="start" name="locate-outline"></ion-icon></ion-button>
+        <ion-button expand="block" color="medium" id="mapOpt">From a location on the map<ion-icon slot="start" name="location-outline"></ion-icon></ion-button>
        <!--  <ion-button fill="clear" id="nextBtn1">Continue <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button> -->
         <p>Step 1 of 4</p>
-        <ion-progress-bar value="0.25"></ion-progress-bar>
-          </div>
-          </ion-slide>
-          <ion-slide>
-            <div class="slide">
-            <h2>Capture photos, audio and video related to your story.</h2>
+        <ion-progress-bar color="secondary" value="0.25"></ion-progress-bar>
+              </div>
+              <div class="swiper-slide">
+                <h2>Capture photos, audio and video related to your story.</h2>
             <input type="file" id="medInput" accept="image/*, video/*, audio/*" capture="filesystem" style="display: none">
             <ion-button color="primary" expand="full" size="large" id="takeMed">Upload Media<ion-icon slot="end" name="folder-outline"></ion-icon></ion-button>
             <input type="file" id="picInput" accept="image/*" capture="filesystem" style="display: none">
@@ -133,12 +134,9 @@
          <ion-button fill="clear" id="nextBtn2">Continue <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
          <p>Step 2 of 4</p>
         <ion-progress-bar value="0.50"></ion-progress-bar>
-       </div>
-          </ion-slide>
-
-          <ion-slide>
-            <div class="slide">
-             <h2>Story Text</h2>
+              </div>
+              <div class="swiper-slide">
+                 <h2>Story Text</h2>
              <ion-list lines="full" class="ion-no-margin">             
           
           <ion-item>
@@ -165,37 +163,36 @@
         <ion-button fill="clear" id="backBtn2">Previous <ion-icon slot="start" name="arrow-back"></ion-icon></ion-button>
          <ion-button fill="clear" id="nextBtn3">Continue <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
          <p>Step 3 of 4</p>
-        <ion-progress-bar value="0.75"></ion-progress-bar>        
-            </div>
-        </ion-slide>
-          
-          <ion-slide>            
-            <h2>Submit Story</h2>
+        <ion-progress-bar value="0.75"></ion-progress-bar>     
+              </div>
+              <div class="swiper-slide">
+                <h2>Submit Story</h2>
             <p><b>NOTE: This content will be publicly visible on the internet. You won’t be able to update or edit your submission so please double check your entries before submitting.</b></p>             
               <ion-button fill="clear" id="backBtn3">Previous <ion-icon slot="start" name="arrow-back"></ion-icon></ion-button>
               <ion-button fill="clear" type="submit" id="submitBtn">Submit</ion-button>
               <p>Step 4 of 4</p>
         <ion-progress-bar value="1"></ion-progress-bar>
-          </ion-slide>
-          <ion-slide>   
-            <ion-icon name="checkmark-circle" style="font-size: 84px" color="primary"></ion-icon>         
+              </div>
+              <div class="swiper-slide">
+                 <ion-icon name="checkmark-circle" style="font-size: 84px" color="primary"></ion-icon>         
             <h2>Story Submitted!</h2>
-            <p><b>Thank you for you submission. Your story will now appear on the map.</b></p>          
-          </ion-slide>
-        </ion-slides>
+            <p><b>Thank you for you submission. Your story will now appear on the map.</b></p> 
+              </div>
+            </div>
+        </div>
       </ion-content>
         </ion-tab>
         <ion-tab-bar slot="bottom">
           <ion-tab-button tab="home">
             <ion-label>Explore</ion-label>
-            <ion-icon name="location-outline"></ion-icon>
+            <ion-icon name="location-outline" size="large"></ion-icon>
           </ion-tab-button>
           <ion-tab-button tab="maps">
             <ion-label>Maps</ion-label>
-            <ion-icon name="map-outline"></ion-icon>
+            <ion-icon name="map-outline" size="large"></ion-icon>
             <ion-badge id="mapcount">6</ion-badge>
           </ion-tab-button>
-          <ion-tab-button tab="stories">
+          <ion-tab-button tab="stories" size="large">
             <ion-label>Share a Story</ion-label>
             <ion-icon name="book-outline"></ion-icon>
           </ion-tab-button>

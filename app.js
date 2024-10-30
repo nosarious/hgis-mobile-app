@@ -24,20 +24,18 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
 
         var StoryModal = document.getElementById('storyModal');
 
-        var splashModal = document.getElementById('splashModal');
-
-        var tourModal = document.getElementById('tourModal');
-
-        var slides = document.querySelector('ion-slides');
+        var splashModal = document.getElementById('splashModal');                
 
         const tabs = document.querySelector('ion-tabs');
 
-        $(document).ready(function() {
+        splashModal.isOpen = true
+
+       /* $(document).ready(function() {
           if ($.cookie('pop') == null) {
             splashModal.isOpen = true;
             $.cookie('pop', '7');
           }
-         });         
+         });  */       
 
         $( "#nextBtn1" ).click(function() {
           slides.update();
@@ -498,25 +496,17 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
 
           if (yearResult == true) {
             getMapYear(date);
-          }
-
-          console.log(title, desc, name, date, mapyear);
-
-          const parsedDate = parseDateEntry(date);
+          }          
 
           // on submit button add features to stories map service
-          const featureServiceLayerUrl = "https://portal1-geo.sabu.mtu.edu/server/rest/services/KeweenawHSDI/story_pts_watts2/FeatureServer/0";
+          const featureServiceLayerUrl = "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer/0";
           // create a new feature to add using the REST API
           const featureToAdd = {
             attributes: {              
               title: title,
               description: desc,              
-              name: name,
-              beginDate: parsedDate.beginDate.getTime(),
-              endDate: parsedDate.endDate.getTime(),
-              userdate: date,
-              mapyear: mapyear, 
-              Tags: "mobile"             
+              name: name,              
+              userdate: date                           
             },
             geometry: {
               x: lon,
@@ -597,15 +587,29 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
         submitAlert.message = '<center><ion-spinner class="blue"></ion-spinner></center>'; 
         submitAlert.backdropDismiss = false;   
 
-        document.body.appendChild(submitAlert);        
-    
-        // Optional parameters to pass to the swiper instance.
-        // See https://swiperjs.com/swiper-api for valid options.
-        slides.options = {
-          initialSlide: 1,
+        document.body.appendChild(submitAlert);
+
+        const slides = new Swiper('.swiper', {          
+          direction: 'horizontal',
+          loop: false,
           speed: 400,
-         // allowTouchMove: false,
-        }             
+          allowTouchMove: false,
+          // If we need pagination
+          pagination: {
+            el: '.swiper-pagination',
+          },
+
+          // Navigation arrows
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+
+          // And if we need scrollbar
+          scrollbar: {
+            el: '.swiper-scrollbar',
+          },
+        });          
   
         // styling for the story points layer
         const storiesRenderer = {
@@ -618,16 +622,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
           }
         };
 
-         // styling for the story points layer
-        const tourRenderer = {
-          "type": "simple",
-          "symbol": {
-            "type": "picture-marker",
-            "url": "assets/tourstop.svg",
-            "width": "20px",
-            "height": "20px"
-          }
-        };
         // Layer for the map index 
         const indexLayer = new FeatureLayer({
           url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/KeTT_Mobile_Map_Indexes/FeatureServer/0",
@@ -638,26 +632,18 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
 
         // Layer for the story points
         const storyLayer = new FeatureLayer({
-          url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/KeweenawHSDI/story_pts_watts2/FeatureServer/0",
-          outFields: ["title", "description", "name", "userdate", "objectid", "globalid", "mapyear"], // Return all fields so it can be queried client-side        
+          url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer/0",
+          outFields: ["title", "description", "name", "userdate", "objectid", "globalid"], // Return all fields so it can be queried client-side        
           renderer: storiesRenderer,
           definitionExpression: "flag IS NULL",
-	  visible: true
-        });
+	        visible: true
+        });      
 
-        // Layer for the VAF Tour Points
-        const tourLayer = new FeatureLayer({
-          url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/VAF_tour_points/FeatureServer/0",
-          outFields: ["*"], // Return all fields so it can be queried client-side          
-          renderer: tourRenderer
-        });
-
-        const graphicsLayer = new GraphicsLayer();
-      //map.add(graphicsLayer);
+        const graphicsLayer = new GraphicsLayer();      
 
         const map = new Map({
           basemap: "satellite", // Basemap layer service
-          layers: [indexLayer, storyLayer, tourLayer, graphicsLayer]
+          layers: [indexLayer, storyLayer, graphicsLayer]
         });
 
         const view = new MapView({
@@ -900,7 +886,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
         // we need this for compatibility with the desktop app
         arcgisRest
           .queryFeatures({
-            url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/giscore_grf_kett_record_locs/MapServer/0",
+            url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer/0",
             where: "recordid = " + "'" + graphic.attributes.globalid + "'",
             resultRecordCount: 1             
           })
