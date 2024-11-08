@@ -1,3 +1,11 @@
+window.Ionic = {
+  config: {
+    rippleEffect: false,
+    innerHTMLTemplatesEnabled: true,
+    mode: 'md',
+  },
+};  
+
 require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/layers/TileLayer", "esri/widgets/Track", "esri/Graphic", "esri/layers/GraphicsLayer", "esri/geometry/support/webMercatorUtils", "esri/geometry/Point"], function (esriConfig, Map, MapView, FeatureLayer, TileLayer, Track, Graphic, GraphicsLayer, webMercatorUtils, Point) {             
 
         function validateFile(file) {
@@ -118,11 +126,11 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
         const files = [];
         // get files from input sources and push into array
         const picInput = document.getElementById('picInput');
-          picInput.onchange = () => {            
-            files.push(picInput.files[0]);
-            console.log(picInput.files[0]);
-            const picFileVal = $('#picInput').val();
-            takePic.textContent = "..." + picFileVal.substring(30);
+        picInput.onchange = () => {            
+          files.push(picInput.files[0]);
+          console.log(picInput.files[0]);
+          const picFileVal = $('#picInput').val();
+          takePic.textContent = "..." + picFileVal.substring(30);
         }
 
        // get files from input sources and push into array
@@ -362,7 +370,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
           }); */       
        }
 
-       
        function parseDateEntry (dateEntry) {
             const response = {
                 valid: false,
@@ -530,7 +537,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
         console.log(response);
         if (response.addResults[0].success === true) {
           const storyObjId = response.addResults[0].objectId;
-          console.log(files, files.length);
+          console.log(files, files.length);          
           if (files.length > 0) {
             files.forEach(function(file) {
             arcgisRest
@@ -541,10 +548,11 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
               })
                 .then(attachmentAdded);
                 function attachmentAdded (newresponse) {
-                  submitAlert.dismiss();
+                  
                   //console.log(newresponse);
                   slides.update();
                   slides.slideNext();
+                  submitAlert.dismiss();
                   storyLayer.refresh();
                 }
             });
@@ -571,6 +579,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
           document.body.appendChild(vidAlert);
           await vidAlert.present();
         }
+
         // Setup the alerts
         const alert = document.createElement('ion-alert');   
         async function presentAlert() {                
@@ -591,6 +600,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
 
         const slides = new Swiper('.swiper', {          
           direction: 'horizontal',
+          initialSlide: 0,
           loop: false,
           speed: 400,
           allowTouchMove: false,
@@ -666,23 +676,20 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
           goToLocationEnabled: false, 
           geolocationOptions: { maximumAge: 0, timeout: 15000, enableHighAccuracy: true }
         });
+
         let highlightSelect;
         // once the view becomes ready
         view.when(function () {
           const queryString = window.location.search;        
           console.log(queryString);
-          if (queryString != "") {
-             // when the page is loaded set the default URL to match Desktop KeTT
-            window.history.pushState("", "KeTT Mobile Storytelling", "https://kett.geospatialresearch.mtu.edu" + queryString);
-            // This will replace the current entry in the browser's history, without reloading
-            window.history.replaceState("", "KeTT Mobile Storytelling", "https://kett.geospatialresearch.mtu.edu" + queryString);
+          if (queryString != "") {            
             splashModal.isOpen = false;
             const urlParams = new URLSearchParams(queryString);
             const storyId = urlParams.get('id');
             console.log(storyId);
 
             const storyQuery = {
-             where: "globalid =" + "'" + storyId + "'",  // Set by select element             
+             where: "objectid =" + "'" + storyId + "'",  // Set by select element             
              outFields: ["*"], // Attributes to return
              returnGeometry: true,
              outSpatialReference: 4326
@@ -711,12 +718,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
             }).catch((error) => {
               console.log(error.error);
           });
-         } else {
-           // when the page is loaded set the default URL to match Desktop KeTT
-          window.history.pushState("", "KeTT Mobile Storytelling", "https://kett.geospatialresearch.mtu.edu");
-          // This will replace the current entry in the browser's history, without reloading
-          window.history.replaceState("", "KeTT Mobile Storytelling", "https://kett.geospatialresearch.mtu.edu");
-         }          
+         } 
       });
 
         $( "#geolocation" ).click(function() {
@@ -870,7 +872,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
                     const range = document.querySelector('ion-range');
                     // const lastEmittedValue = document.querySelector('#lastValue');
                     // adjust the transparency of the map based on the sliders value  
-                    range.addEventListener('ionChange', ({ detail }) => {                     
+                    range.addEventListener('ionInput', ({ detail }) => {                     
                         current_layer.opacity = detail.value / 100;                  
                     });               
                 };
@@ -881,18 +883,18 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
 
       let shareURL;
       // generates a share URL to be shared with the Web Share API
-      function shareStory (graphic) {          
-        // query the record_locs feature service for the loccode
-        // we need this for compatibility with the desktop app
+      function shareStory (graphic) {              
+        // query the stories layer for the objectid        
         arcgisRest
           .queryFeatures({
             url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer/0",
-            where: "recordid = " + "'" + graphic.attributes.globalid + "'",
+            where: "objectid = " + "'" + graphic.attributes.objectid + "'",
             resultRecordCount: 1             
           })
-          .then((response) => {            
+          .then((response) => { 
+            const baseURL = window.location.href;           
             const locCode = response.features[0].attributes.loccode;                
-            const rawShareURL = "https://kett.geospatialresearch.mtu.edu?id=" + graphic.attributes.globalid + "&recnumber=" + graphic.attributes.globalid + "&loctype=&title=" + graphic.attributes.title + "&mapyear=" + graphic.attributes.mapyear + "&x=" + response.features[0].geometry.x + "&y=" + response.features[0].geometry.y + "&markerid=" + locCode + "&type=story";
+            const rawShareURL = baseURL + "?id=" + graphic.attributes.objectid + "&title=" + graphic.attributes.title;
 
               shareURL = rawShareURL.replace(/\s/g, '%20');
               shareURL = shareURL.replace(/\|/g, "%7C");
@@ -939,9 +941,9 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
          storyModal.isOpen = false;
          // if the storyModal is closed, return the window URL to normal
          // This will create a new entry in the browser's history, without reloading
-         window.history.pushState("", "KeTT Mobile Storytelling", "https://kett.geospatialresearch.mtu.edu");
+         window.history.pushState("", "", "/");
          // This will replace the current entry in the browser's history, without reloading
-         window.history.replaceState("", "KeTT Mobile Storytelling", "https://kett.geospatialresearch.mtu.edu");
+         window.history.replaceState("", "", "/");
       });
 
        $( "#modalClose" ).click(function() {
