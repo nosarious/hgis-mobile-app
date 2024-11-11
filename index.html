@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://unpkg.com/@esri/arcgis-rest-request@4.0.0/dist/bundled/request.umd.js"></script>
-    <script src="https://unpkg.com/@esri/arcgis-rest-feature-service@4.0.0/dist/bundled/feature-service.umd.js"></script>
+    <script src="https://unpkg.com/@esri/arcgis-rest-request@4.2.3/dist/bundled/request.umd.js"></script>
+    <script src="https://unpkg.com/@esri/arcgis-rest-feature-service@4.0.6/dist/bundled/feature-service.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/linkifyjs@3.0.5/dist/linkify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/linkify-html@3.0.5/dist/linkify-html.min.js"></script>
     <script src="https://js.arcgis.com/4.30/"></script>    
@@ -103,6 +103,7 @@
 
         <ion-tab tab="stories"> 
         <ion-content fullscreen class="ion-padding" scroll-y="true">
+         <ion-loading id="loadSubmit" trigger="open-loading" message="Submitting your story, please wait..." duration="30000"></ion-loading>
           <!-- Slider main container -->
           <div class="swiper">
             <!-- Additional required wrapper -->
@@ -176,7 +177,7 @@
               <div class="swiper-slide">
                  <center><ion-icon name="checkmark-circle" style="font-size: 84px" color="secondary"></ion-icon></center>         
             <h2><center>Story Submitted!</center></h2>
-            <p><b>Thank you for you submission. Your story will now appear on the map.</b></p> 
+            <p><b>Thank you for your submission. Your story will now appear on the map.</b></p> 
               </div>
             </div>
         </div>

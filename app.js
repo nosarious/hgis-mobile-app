@@ -36,7 +36,9 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
 
         const tabs = document.querySelector('ion-tabs');
 
-        splashModal.isOpen = true
+        var submitting = document.getElementById('loadSubmit');
+
+        splashModal.isOpen = true;        
 
        /* $(document).ready(function() {
           if ($.cookie('pop') == null) {
@@ -475,8 +477,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
         } 
 
         // when the user clicks the story submit button
-        $( "#submitBtn" ).click(function() {
-          submitAlert.present();
+        $( "#submitBtn" ).click(function() {  
+           submitting.isOpen = true;       
           // get values from the story submission slides
           const title = $('#userTitle').val();
           const desc = $('#userDesc').val();
@@ -513,7 +515,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
               title: title,
               description: desc,              
               name: name,              
-              userdate: date                           
+              userdate: date,
+              map: currentMapUrl,                          
             },
             geometry: {
               x: lon,
@@ -547,19 +550,24 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
                 attachment: file
               })
                 .then(attachmentAdded);
-                function attachmentAdded (newresponse) {
-                  
-                  //console.log(newresponse);
-                  slides.update();
-                  slides.slideNext();
-                  submitAlert.dismiss();
-                  storyLayer.refresh();
+                function attachmentAdded (newresponse) {                                
+                  console.log("added attachment" + newresponse);
+                  submitting.isOpen = false; 
+                  // Delay the alert dismissal until the slide transition is fully complete
+                  setTimeout(() => {            
+                      slides.update();
+                      slides.slideNext();                  
+                      storyLayer.refresh();
+                  }, 600); // 300ms delay, adjust as necessary
                 }
             });
          } else {
-           submitAlert.dismiss();
-           slides.update();
-           slides.slideNext();
+            submitting.isOpen = false;
+            setTimeout(() => {            
+                slides.update();
+                slides.slideNext();                  
+                storyLayer.refresh();
+            }, 600); // 300ms delay, adjust as necessary     
          }         
         }
 
@@ -643,7 +651,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
         // Layer for the story points
         const storyLayer = new FeatureLayer({
           url: "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer/0",
-          outFields: ["title", "description", "name", "userdate", "objectid", "globalid"], // Return all fields so it can be queried client-side        
+          outFields: ["title", "description", "name", "userdate", "objectid", "globalid", "map"], // Return all fields so it can be queried client-side        
           renderer: storiesRenderer,
           definitionExpression: "flag IS NULL",
 	        visible: true
@@ -686,7 +694,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
             splashModal.isOpen = false;
             const urlParams = new URLSearchParams(queryString);
             const storyId = urlParams.get('id');
-            console.log(storyId);
+            const mapid = urlParams.get('map');
+            console.log(storyId, mapid);
 
             const storyQuery = {
              where: "objectid =" + "'" + storyId + "'",  // Set by select element             
@@ -694,6 +703,21 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
              returnGeometry: true,
              outSpatialReference: 4326
             };
+
+              map.allLayers.filter(function(layer) {
+                if (layer.type === "tile") {
+                  map.remove(layer);
+                } 
+              });                 
+
+              let storyMapLayer = new TileLayer({
+                 url: mapid
+              });
+
+              map.add(storyMapLayer);
+
+              // push the current layer to the back
+              map.reorder(storyMapLayer, 1);       
 
             storyLayer.queryFeatures(storyQuery)
             .then((results) => {
@@ -703,7 +727,9 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
                 zoom: 19,
                 speedFactor: 0.00000000001, // animation is 10 times slower than default
                 easing: "out-quint"
-              });
+              }); 
+
+
               // Set a small delay until the story shows up
               setTimeout(() => {
                 console.log("Delayed for 2 seconds.");
@@ -801,7 +827,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
 
         const listNode = document.getElementById("mapcontent");
 
-        let graphics; 
+        let graphics;
+        let currentMapUrl = 'present'; // track the url of the currently selected overlay map 
         view.whenLayerView(indexLayer).then(function(layerView) {
           layerView.watch("updating", function(value) { 
               listNode.innerHTML = "";                          
@@ -842,10 +869,12 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
                     item.addEventListener("click", () => resultClickHandler(result, index));
                     fragment.appendChild(item);                     
                     listNode.appendChild(fragment);
-                  });  
+                  });
 
-                function resultClickHandler(result, index) {                          
-                 // item.classList.add("invalid");
+                
+                function resultClickHandler(result, index) {
+                  currentMapUrl = 'present';                       
+                
                   tabs.select('home');
                   const popup = graphics && graphics[parseInt(index, 10)];
                
@@ -853,7 +882,9 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
                     if (layer.type === "tile") {
                       map.remove(layer);
                     } 
-                  });         
+                  });  
+
+                  currentMapUrl = result.attributes.service_url;       
 
                   let current_layer = new TileLayer({
                      url: result.attributes.service_url
@@ -882,6 +913,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
       });
 
       let shareURL;
+      let originURL = window.location.href;
+      console.log(originURL);
       // generates a share URL to be shared with the Web Share API
       function shareStory (graphic) {              
         // query the stories layer for the objectid        
@@ -894,7 +927,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
           .then((response) => { 
             const baseURL = window.location.href;           
             const locCode = response.features[0].attributes.loccode;                
-            const rawShareURL = baseURL + "?id=" + graphic.attributes.objectid + "&title=" + graphic.attributes.title;
+            const rawShareURL = baseURL + "?id=" + graphic.attributes.objectid + "&title=" + graphic.attributes.title + "&map=" + graphic.attributes.map;
 
               shareURL = rawShareURL.replace(/\s/g, '%20');
               shareURL = shareURL.replace(/\|/g, "%7C");
@@ -941,9 +974,9 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/layers/FeatureLay
          storyModal.isOpen = false;
          // if the storyModal is closed, return the window URL to normal
          // This will create a new entry in the browser's history, without reloading
-         window.history.pushState("", "", "/");
+         window.history.pushState("", "", originURL);
          // This will replace the current entry in the browser's history, without reloading
-         window.history.replaceState("", "", "/");
+         window.history.replaceState("", "", originURL);
       });
 
        $( "#modalClose" ).click(function() {
