@@ -1,0 +1,53 @@
+{
+  "map": {
+    "extent": [0,0],
+    "zoom": 12
+  },
+  "navbar": {
+    "title": "CDMI HGIS Mobile App",
+    "color": "#285756",
+    "logo": "assets/marker_story.png"  
+  },
+  "footer": {
+    "backgroundColor": "black",
+    "iconColorInactive": "gray",
+    "iconColorActive": "red"
+  },
+  "gpsButton": {
+    "backgroundColor": "green",       
+    "iconColorInactive": "orange",
+    "iconColorActive": "color"  
+  },
+  "layers": {
+    "storiesLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer",
+    "indexLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/KeTT_Mobile_Map_Indexes/FeatureServer"
+  },
+  "splashScreen": {
+    "visible": true,
+    "backgroundColor": "green",
+    "textColor": "white",
+    "text": "This is an HGIS Mobile app example",
+    "image": "assets/test.png"
+  },
+  "markers": {
+    "storyMarker": "assets/marker_story.png"
+  },
+  "storyButtons": {
+    "backgroundColor": "blue",
+    "fontcolor": "white"
+  },
+  "storySubmissionIcon": {
+    "color": "blue"
+  },
+  "progressBar": {
+    "color-inactive": "blue",
+    "color-active": "red"
+  },
+  "transparencySlider": {
+    "color": "blue",
+    "activeColor": "green"
+  },
+  "navbarLinks": {
+    "link1": "1"
+  }
+}

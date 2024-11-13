@@ -27,9 +27,9 @@
   <body>
     <ion-app>
       <ion-header>
-        <ion-toolbar color="header">
+        <ion-toolbar id="toolbar">
           <ion-buttons slot="start">
-            <ion-img src="assets/dmilogo.png" style="width: 60px; height: 60px;"></ion-img>
+            <ion-img src="assets/dmilogo.png" id="app-logo" style="width: 60px; height: 60px;"></ion-img>
           </ion-buttons>
           <ion-buttons slot="end">
             <ion-text color="white">
@@ -46,12 +46,12 @@
           </ion-content>
         </ion-popover>
         <ion-text color="white">  
-          <ion-title>CDMI Mobile Application</ion-title>
+          <ion-title id="appTitle">CDMI Mobile Application</ion-title>
       </ion-text>
         </ion-toolbar>
       </ion-header> 
 
-      <ion-tabs>
+      <ion-tabs id="footer">
         <ion-tab tab="home">
           <ion-header translucent>
             <ion-toolbar>
@@ -72,8 +72,8 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
-      <ion-content class="ion-padding" style="--ion-background-color: #285756">      
-          <img src="assets/cdmibanner.png"/>
+      <ion-content class="ion-padding">      
+          <img src="assets/cdmibanner.png"/ id="splashImg">
           <p style="color: white; font-size: 18px;">This is an example historical GIS mobile application for the CDMI.</p>
           <p style="color: white; font-size: 18px;">Participants can plug in in their own GIS layers and easily change stlying components to create their own historical GIS mobile application.  
            </p>          
