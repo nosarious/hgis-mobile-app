@@ -47,8 +47,9 @@ fetch('config.json')
     geolocation.style.setProperty('color', config.gpsButton.iconColorInactive);    
     takeMed.style.setProperty('color', config.storyButtons.textColor); 
     takeMed.style.setProperty('--ion-color-primary', config.storyButtons.backgroundColor);
-    bar2.style.setProperty('--background', 'green');
-    bar2.style.setProperty('--progress-background', 'yellow');
+    bar2.style.setProperty('--background', config.storyProgressBar.colorInactive);
+    bar2.style.setProperty('--progress-background', config.storyProgressBar.colorActive);
+    
 
 
 
