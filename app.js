@@ -49,8 +49,10 @@ fetch('config.json')
     takeMed.style.setProperty('--ion-color-primary', config.storyButtons.backgroundColor);
     bar2.style.setProperty('--background', config.storyProgressBar.colorInactive);
     bar2.style.setProperty('--progress-background', config.storyProgressBar.colorActive);
-    
-
+    document.documentElement.style.setProperty('--ion-background-color', config.body.backgroundColor);
+    document.documentElement.style.setProperty('--ion-text-color', config.body.textColor);
+    document.documentElement.style.setProperty('--ion-border-color', config.body.textColor);
+    document.documentElement.style.setProperty('ion-icon', config.body.textColor);
 
 
     require(["esri/config",
