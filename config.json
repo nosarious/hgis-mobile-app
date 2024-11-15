@@ -1,51 +1,80 @@
 {
   "map": {
     "extent": [0,0],
-    "zoom": 12
+    "basemap": "topo",
+    "zoom": 3
   },
   "navbar": {
     "title": "CDMI HGIS Mobile App",
-    "color": "#285756",
-    "logo": "assets/marker_story.png"  
-  },
-  "footer": {
-    "backgroundColor": "black",
-    "iconColorInactive": "gray",
-    "iconColorActive": "red"
-  },
-  "gpsButton": {
-    "backgroundColor": "green",       
-    "iconColorInactive": "orange",
-    "iconColorActive": "color"  
+    "backgroundColor": "#285756",
+    "logo": "assets/marker_story.png",
+    "textColor": "black"  
   },
   "layers": {
     "storiesLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer",
     "indexLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/KeTT_Mobile_Map_Indexes/FeatureServer"
   },
+  "markers": {
+    "storyMarkerUrl": "assets/marker_story.png",
+    "storyMarkerWidth": "20px",
+    "storyMarkerHeight": "20px"
+  },
   "splashScreen": {
     "visible": true,
+    "title": "HGIS Mobile App",
+    "titleColor": "red",
     "backgroundColor": "green",
     "textColor": "white",
-    "text": "This is an HGIS Mobile app example",
-    "image": "assets/test.png"
+    "paragraphText": "This is an HGIS Mobile app example. Put information about your app here. HTML tags can be used such as <b>,<p>, <br>",
+    "image": "assets/test.png",
+    "navBarColor": "black",
+    "navBarTextColor": "black",
+    "closeTextColor": "red"
+  }, 
+  "footer": {
+    "backgroundColor": "black",
+    "iconColorInactive": "gray",
+    "iconColorActive": "red"
   },
-  "markers": {
-    "storyMarker": "assets/marker_story.png"
+  "mapCountIcon": {
+    "backgroundColor": "purple",
+    "textColor": "black"
   },
+  "gpsButton": {
+    "backgroundColor": "green",       
+    "iconColorInactive": "orange",
+    "iconColorActive": "red"  
+  },   
   "storyButtons": {
     "backgroundColor": "blue",
-    "fontcolor": "white"
+    "fontColor": "white"
   },
-  "storySubmissionIcon": {
+  "storySubmittedIcon": {
     "color": "blue"
   },
-  "progressBar": {
+  "storyProgressBar": {
     "color-inactive": "blue",
     "color-active": "red"
   },
+  "storyPopup": {
+    "headerBackgroundColor": "purple",
+    "headerTextColor": "white",
+    "backgroundColor": "black",
+    "textColor": "yellow"
+  },
+  "mapTab": {
+    "backgroundColor": "gray",
+    "textColor": "white"
+  },
+  "storyTab": {
+    "backgroundColor": "gray",
+    "textColor": "white"
+  },
   "transparencySlider": {
-    "color": "blue",
-    "activeColor": "green"
+    "barColor": "red",    
+    "barColorActive": "blue",
+    "barColorInactive": "green",
+    "handleColor": "red"
   },
   "navbarLinks": {
     "link1": "1"

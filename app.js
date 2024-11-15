@@ -15,8 +15,16 @@ fetch('config.json')
     const toolbar = document.getElementById('toolbar');
     const footer = document.getElementById('footer');
     const splash = document.getElementById('splashModal');
+    const splashText = document.getElementById('splashText');
+    const splashNavBar = document.getElementById('splashNavBar');
+    const mapcount = document.getElementById('mapcount');
+    const slider = document.getElementById('slider');
+    const geolocation = document.getElementById('geolocation');
+    const progress = document.querySelector('ion-progress-bar');
+
     appTitle.textContent = config.navbar.title;
-    document.documentElement.style.setProperty('--ion-toolbar-background', config.navbar.color);    
+    appTitle.style.setProperty('color', config.navbar.textColor);
+    document.documentElement.style.setProperty('--ion-toolbar-background', config.navbar.backgroundColor);    
     document.documentElement.style.setProperty('--ion-tab-bar-background', config.footer.backgroundColor);
     document.documentElement.style.setProperty('--ion-tab-bar-color-selected', config.footer.iconColorActive);
     document.documentElement.style.setProperty('--ion-tab-bar-color', config.footer.iconColorInactive);
@@ -24,6 +32,24 @@ fetch('config.json')
     document.documentElement.style.setProperty('--ion-tab-bar-color', config.footer.iconColorInactive);         
     splash.style.setProperty('--ion-background-color', config.splashScreen.backgroundColor);
     document.getElementById('splashImg').src = config.splashScreen.image;
+    splashText.innerHTML = config.splashScreen.paragraphText;
+    splashText.style.setProperty('color', config.splashScreen.textColor);
+    splashNavBar.style.setProperty('--ion-toolbar-background', config.splashScreen.navBarColor);
+    splashTitle.style.setProperty('color', config.splashScreen.titleColor);
+    splashTitle.innerHTML = config.splashScreen.title;
+    splashModalClose.style.setProperty('color', config.splashScreen.closeTextColor);
+    mapcount.style.setProperty('background-color', config.mapCountIcon.backgroundColor);
+    mapcount.style.setProperty('color', config.mapCountIcon.textColor);
+    slider.style.setProperty('--bar-background', config.transparencySlider.barColorInactive);
+    slider.style.setProperty('--bar-background-active', config.transparencySlider.barColorActive);
+    slider.style.setProperty('--knob-background', config.transparencySlider.handleColor);
+    geolocation.style.setProperty('--ion-color-base', config.gpsButton.backgroundColor);
+    geolocation.style.setProperty('color', config.gpsButton.iconColorInactive);    
+    takeMed.style.setProperty('color', config.storyButtons.textColor); 
+    takeMed.style.setProperty('--ion-color-primary', config.storyButtons.backgroundColor);
+    bar2.style.setProperty('--background', 'green');
+    bar2.style.setProperty('--progress-background', 'yellow');
+
 
 
     require(["esri/config",
@@ -665,9 +691,9 @@ fetch('config.json')
               "type": "simple",
               "symbol": {
                 "type": "picture-marker",
-                "url": "assets/marker_story.png",
-                "width": "18px",
-                "height": "18px"
+                "url": config.markers.storyMarkerUrl,
+                "width": config.markers.storyMarkerHeight,
+                "height": config.markers.storyMarkerHeight
               }
             };
 
@@ -691,14 +717,14 @@ fetch('config.json')
             const graphicsLayer = new GraphicsLayer();      
 
             const map = new Map({
-              basemap: "satellite", // Basemap layer service
+              basemap: config.map.basemap, // Basemap layer service
               layers: [indexLayer, storyLayer, graphicsLayer]
             });
 
             const view = new MapView({
               map: map,
-              center: [-88.5694, 47.1211], // Longitude, latitude
-              zoom: 10, // Zoom level
+              center: config.map.extent, // Longitude, latitude
+              zoom: config.map.zoom, // Zoom level
               container: "viewDiv", // Div element
               highlightOptions: {            
                 fillOpacity: 0
@@ -781,8 +807,8 @@ fetch('config.json')
             $( "#geolocation" ).click(function() {
              // track.start();
              if (track.tracking == false) {
-              track.start();
-              document.getElementById("gpsicon").style.color = "#3880ff";
+              track.start();              
+              geolocation.style.setProperty('color', config.gpsButton.iconColorActive);
               track.once("track", ({ position }) => {
                currentCoords = position.coords;
                const point = new Point({
@@ -794,7 +820,7 @@ fetch('config.json')
               });
              } else {
               track.stop();
-              document.getElementById("gpsicon").style.color = "black";
+              geolocation.style.setProperty('color', config.gpsButton.iconColorInactive);
              }            
             });
 

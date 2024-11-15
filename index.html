@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
-    <link href="https://www.dafontfree.net/embed/cGF0cmljaWFuLXJlZ3VsYXImZGF0YS8yNi9wLzEzODA1Ny9QYXRyaWNhbi50dGY" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus&family=Lato:wght@300;400&display=swap" rel="stylesheet">
@@ -61,9 +60,9 @@
         <ion-content [fullscreen]="true">  
          <ion-modal id="splashModal">
       <ion-header>
-        <ion-toolbar color="gray">
+        <ion-toolbar id="splashNavBar">
           <ion-text color="white">
-          <ion-title>CDMI Mobile App Splash Screen</ion-title>
+          <ion-title id="splashTitle">CDMI Mobile App Splash Screen</ion-title>
       </ion-text>
           <ion-buttons slot="end">
             <ion-text color="white">
@@ -74,13 +73,11 @@
       </ion-header>
       <ion-content class="ion-padding">      
           <img src="assets/cdmibanner.png"/ id="splashImg">
-          <p style="color: white; font-size: 18px;">This is an example historical GIS mobile application for the CDMI.</p>
-          <p style="color: white; font-size: 18px;">Participants can plug in in their own GIS layers and easily change stlying components to create their own historical GIS mobile application.  
-           </p>          
+          <div id="splashText">Splash text here</div>         
       </ion-content>
     </ion-modal>                 
           <div id="viewDiv"></div>           
-          <ion-range value="100" mode="md"></ion-range> 
+          <ion-range value="100" mode="md" id="slider"></ion-range> 
           <ion-fab horizontal="end" vertical="bottom" slot="fixed">
           <ion-fab-button color="locate" id="geolocation">
             <ion-icon name="locate-sharp" id="gpsicon"></ion-icon>
@@ -118,12 +115,12 @@
         <ion-button expand="block" color="medium" id="mapOpt">From a location on the map<ion-icon slot="start" name="location-outline"></ion-icon></ion-button>
        <!--  <ion-button fill="clear" id="nextBtn1">Continue <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button> -->
         <p>Step 1 of 4</p>
-        <ion-progress-bar color="secondary" value="0.25"></ion-progress-bar>
+        <ion-progress-bar color="secondary" id="bar1" value="0.25"></ion-progress-bar>
               </div>
               <div class="swiper-slide">
                 <h2>Capture photos, audio and video related to your story.</h2>
             <input type="file" id="medInput" accept="image/*, video/*, audio/*" capture="filesystem" style="display: none">
-            <ion-button color="primary" expand="full" size="large" id="takeMed">Upload Media<ion-icon slot="end" name="folder-outline"></ion-icon></ion-button>
+            <ion-button class="storybutton" expand="full" size="large" id="takeMed">Upload Media<ion-icon slot="end" name="folder-outline"></ion-icon></ion-button>
             <input type="file" id="picInput" accept="image/*" capture="filesystem" style="display: none">
             <ion-button color="primary" expand="full" size="large" id="takePic">Take a Picture <ion-icon slot="end" name="camera-outline"></ion-icon></ion-button>
             <input type="file" id="audInput" accept="audio/*" capture="microphone" style="display: none">
@@ -134,12 +131,11 @@
              <ion-button fill="clear" id="backBtn1">Previous <ion-icon slot="start" name="arrow-back"></ion-icon></ion-button>
          <ion-button fill="clear" id="nextBtn2">Continue <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
          <p>Step 2 of 4</p>
-        <ion-progress-bar value="0.50"></ion-progress-bar>
+        <ion-progress-bar id="bar2" value="0.50"></ion-progress-bar>
               </div>
               <div class="swiper-slide">
                  <h2>Story Text</h2>
-             <ion-list lines="full" class="ion-no-margin">     
-          
+             <ion-list lines="full" class="ion-no-margin">        
           <ion-item>
             <ion-label position="floating">Story Title<ion-text color="danger">*</ion-text></ion-label>
             <ion-input id="userTitle" required="true" placeholder="A short title for your story."></ion-input>
@@ -150,8 +146,7 @@
             <ion-input id="userDate" class="ion-invalid" required pattern="\d{4}-\d{2}-\d{2}" placeholder="1922 or 1920-1930 or 05/03/1932"></ion-input>
             <ion-text color="danger" style="display: none" id="dateError">Please enter a date in one of the specified formats.</ion-text>   
           </ion-item> 
-        </ion-list>      
-
+        </ion-list> 
           <ion-item>
             <ion-label position="floating">Story Text (optional)</ion-label>
             <ion-textarea rows="6" cols="20" id="userDesc" placeholder="Type your story here. This is optional. In the previous section you had the option to record or upload video or audio of your story."></ion-textarea>
@@ -164,7 +159,7 @@
         <ion-button fill="clear" id="backBtn2">Previous <ion-icon slot="start" name="arrow-back"></ion-icon></ion-button>
          <ion-button fill="clear" id="nextBtn3">Continue <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
          <p>Step 3 of 4</p>
-        <ion-progress-bar value="0.75"></ion-progress-bar>     
+        <ion-progress-bar value="0.75" id="bar3"></ion-progress-bar>     
               </div>
               <div class="swiper-slide">
                 <h2>Submit Story</h2>
@@ -172,7 +167,7 @@
               <ion-button fill="clear" id="backBtn3">Previous <ion-icon slot="start" name="arrow-back"></ion-icon></ion-button>
               <ion-button fill="clear" type="submit" id="submitBtn">Submit</ion-button>
               <p>Step 4 of 4</p>
-        <ion-progress-bar value="1"></ion-progress-bar>
+        <ion-progress-bar value="1" id="bar4"></ion-progress-bar>
               </div>
               <div class="swiper-slide">
                  <center><ion-icon name="checkmark-circle" style="font-size: 84px" color="secondary"></ion-icon></center>         

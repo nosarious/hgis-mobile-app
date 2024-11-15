@@ -120,7 +120,12 @@
       #micicon {
         width: 100px;
         height: 100px;
-      }   
+      }  
+
+      #splashText {
+        font-size: 18px;
+        color: white;
+      } 
       /* CSS specific to iOS devices */ 
       @supports (-webkit-touch-callout: none) {
         ion-range {
