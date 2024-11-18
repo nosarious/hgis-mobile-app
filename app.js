@@ -12,7 +12,8 @@ fetch('config.json')
   .then(config => { 
     // Apply style settings from the config.json file
     const appTitle = document.getElementById('appTitle');
-    const toolbar = document.getElementById('toolbar');
+    const mainToolbar = document.getElementById('mainToolbar');
+    const storyToolbar = document.getElementById('storyToolbar');
     const footer = document.getElementById('footer');
     const splash = document.getElementById('splashModal');
     const splashText = document.getElementById('splashText');
@@ -20,11 +21,11 @@ fetch('config.json')
     const mapcount = document.getElementById('mapcount');
     const slider = document.getElementById('slider');
     const geolocation = document.getElementById('geolocation');
-    const progress = document.querySelector('ion-progress-bar');
+    const progress = document.querySelector('ion-progress-bar');    
 
     appTitle.textContent = config.navbar.title;
     appTitle.style.setProperty('color', config.navbar.textColor);
-    document.documentElement.style.setProperty('--ion-toolbar-background', config.navbar.backgroundColor);    
+    mainToolbar.style.setProperty('--ion-toolbar-background', config.navbar.backgroundColor);    
     document.documentElement.style.setProperty('--ion-tab-bar-background', config.footer.backgroundColor);
     document.documentElement.style.setProperty('--ion-tab-bar-color-selected', config.footer.iconColorActive);
     document.documentElement.style.setProperty('--ion-tab-bar-color', config.footer.iconColorInactive);
@@ -52,8 +53,27 @@ fetch('config.json')
     document.documentElement.style.setProperty('--ion-background-color', config.body.backgroundColor);
     document.documentElement.style.setProperty('--ion-text-color', config.body.textColor);
     document.documentElement.style.setProperty('--ion-border-color', config.body.textColor);
-    document.documentElement.style.setProperty('ion-icon', config.body.textColor);
+    storyToolbar.style.setProperty('--ion-toolbar-background', config.storyPopup.headerBackgroundColor);
+    storymodaltitle.style.setProperty('color', config.storyPopup.headerTextColor);
 
+    // Generare links from the link list
+    const links = config.links; // Array of links from config.json
+    const linkList = document.getElementById('linkList'); // The ion-list element
+
+    // Clear existing content
+    linkList.innerHTML = '';
+
+    // Loop through each link in the config and create an ion-item
+    links.forEach(link => {
+      const ionItem = document.createElement('ion-item');
+      ionItem.setAttribute('button', 'true');
+      ionItem.setAttribute('detail', 'false');
+      ionItem.setAttribute('href', link.url);
+      ionItem.textContent = link.text; // Set the display text
+
+      // Append the ion-item to the list
+      linkList.appendChild(ionItem);
+    });    
 
     require(["esri/config",
       "esri/Map", 
@@ -568,7 +588,7 @@ fetch('config.json')
               }          
 
               // on submit button add features to stories map service
-              const featureServiceLayerUrl = config.layers.storiesLayerUrl;
+              const featureServiceLayerUrl = 'https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer/';
               // create a new feature to add using the REST API
               const featureToAdd = {
                 attributes: {              
@@ -923,6 +943,7 @@ fetch('config.json')
                         icon.name = "map-outline";
                         item.detail = "false";                                         
                         icon.slot = "end";
+                        icon.color = config.body.textColor; // color set from config.json
                         label.innerHTML = year + " " + title; 
                         item.appendChild(icon);
                         item.appendChild(label);

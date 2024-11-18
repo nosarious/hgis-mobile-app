@@ -26,7 +26,7 @@
   <body>
     <ion-app>
       <ion-header>
-        <ion-toolbar id="toolbar">
+        <ion-toolbar id="mainToolbar">
           <ion-buttons slot="start">
             <ion-img src="assets/dmilogo.png" id="app-logo" style="width: 60px; height: 60px;"></ion-img>
           </ion-buttons>
@@ -37,10 +37,8 @@
           </ion-buttons>
           <ion-popover trigger="menuBtn" dismiss-on-select="true">
           <ion-content>
-            <ion-list>
-              <ion-item button="true" detail="false" href="https://www.keweenawhistory.com/about-the-project.html">About the project</ion-item>
-              <ion-item button="true" detail="false" href="https://www.keweenawhistory.com/about-the-maps.html">About the maps</ion-item>
-              <ion-item button="true" detail="false" href="https://www.keweenawhistory.com/meet-the-team.html">Meet the team</ion-item>
+            <ion-list id="linkList">
+              <!-- Links will be dynamically added here -->
             </ion-list>
           </ion-content>
         </ion-popover>
@@ -197,7 +195,7 @@
   </ion-content> 
     <ion-modal id="storyModal">
       <ion-header>
-        <ion-toolbar color="favorite">
+        <ion-toolbar id=storyToolbar>
           <ion-text color="white">
           <ion-title id="storymodaltitle">Story</ion-title>
       </ion-text>

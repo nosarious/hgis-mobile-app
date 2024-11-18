@@ -62,9 +62,7 @@
   },
   "storyPopup": {
     "headerBackgroundColor": "purple",
-    "headerTextColor": "white",
-    "backgroundColor": "black",
-    "textColor": "yellow"
+    "headerTextColor": "white"   
   },
   "mapTab": {
     "backgroundColor": "gray",
@@ -80,7 +78,18 @@
     "barColorInactive": "green",
     "handleColor": "red"
   },
-  "navbarLinks": {
-    "link1": "1"
-  }
+  "links": [
+    {
+      "text": "About the project",
+      "url": "https://www.keweenawhistory.com/about-the-project.html"
+    },
+    {
+      "text": "About the maps",
+      "url": "https://www.keweenawhistory.com/about-the-maps.html"
+    },
+    {
+      "text": "Meet the team",
+      "url": "https://www.keweenawhistory.com/meet-the-team.html"
+    }
+  ]  
 }
