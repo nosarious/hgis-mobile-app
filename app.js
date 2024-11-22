@@ -131,13 +131,16 @@ fetch('config.json')
                     return toast.present();
                 }
 
-                var StoryModal = document.getElementById('storyModal');
+                const StoryModal = document.getElementById('storyModal');
 
-                var splashModal = document.getElementById('splashModal');
+                const splashModal = document.getElementById('splashModal');
 
                 const tabs = document.querySelector('ion-tabs');
 
-                var submitting = document.getElementById('loadSubmit');
+                const submitting = document.getElementById('loadSubmit');
+
+                const range = document.querySelector('ion-range');
+
                 if (config.splashScreen.visible == false) {
                     splashModal.isOpen = false;
                 } else {
@@ -821,14 +824,29 @@ fetch('config.json')
                             }
                         });
 
-                        let storyMapLayer = new TileLayer({
-                            url: mapid
-                        });
+                        if (mapid != "Present" || mapid != null) {
+                            const storyMapLayer = new TileLayer({
+                                url: mapid
+                            });
 
-                        map.add(storyMapLayer);
+                            map.add(storyMapLayer);
 
-                        // push the current layer to the back
-                        map.reorder(storyMapLayer, 1);
+                            // push the current layer to the back
+                            map.reorder(storyMapLayer, 1);
+
+                            // get the value of the range slider  
+                            let rangeVal = $("ion-range").val();
+
+                            storyMapLayer.opacity = rangeVal / 100;
+                            
+                            // const lastEmittedValue = document.querySelector('#lastValue');
+                            // adjust the transparency of the map based on the sliders value  
+                            range.addEventListener('ionInput', ({
+                                detail
+                            }) => {
+                                storyMapLayer.opacity = detail.value / 100;
+                            });
+                        }
 
                         storyLayer.queryFeatures(storyQuery)
                             .then((results) => {
@@ -1003,7 +1021,7 @@ fetch('config.json')
 
                                         currentMapUrl = result.attributes.service_url;
 
-                                        let current_layer = new TileLayer({
+                                       current_layer = new TileLayer({
                                             url: result.attributes.service_url
                                         });
 
@@ -1016,8 +1034,7 @@ fetch('config.json')
                                         let rangeVal = $("ion-range").val();
 
                                         current_layer.opacity = rangeVal / 100;
-
-                                        const range = document.querySelector('ion-range');
+                                        
                                         // const lastEmittedValue = document.querySelector('#lastValue');
                                         // adjust the transparency of the map based on the sliders value  
                                         range.addEventListener('ionInput', ({
