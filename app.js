@@ -753,7 +753,7 @@ fetch('config.json')
                 // Layer for the map index 
                 const indexLayer = new FeatureLayer({
                     url: config.layers.indexLayerUrl,
-                    outFields: ["title", "year", "service_url"], // Return all fields so it can be queried client-side
+                    outFields: ["title", "mapyear", "service_url"], // Return all fields so it can be queried client-side
                     opacity: 0
                     //renderer: renderer
                 });
@@ -980,7 +980,7 @@ fetch('config.json')
 
                                     // Sort the features first by title, then by year  
                                     graphics.sort(function(a, b) {
-                                        return a.attributes.title.localeCompare(b.attributes.title) || a.attributes.year - b.attributes.year;
+                                        return a.attributes.title.localeCompare(b.attributes.title) || a.attributes.mapyear - b.attributes.mapyear;
                                     });
 
                                     document.getElementById("mapcount").innerHTML = results.features.length;
@@ -989,7 +989,7 @@ fetch('config.json')
                                     graphics.forEach(function(result, index) {
                                         const attributes = result.attributes;
                                         const title = attributes.title;
-                                        const year = attributes.year;
+                                        const year = attributes.mapyear;
                                         item = document.createElement("ion-item");
                                         const label = document.createElement("ion-label");
                                         const icon = document.createElement("ion-icon");
