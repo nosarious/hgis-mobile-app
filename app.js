@@ -10,6 +10,8 @@ window.Ionic = {
 fetch('config.json')
     .then(response => response.json())
     .then(config => {
+        // Apply title from the config.json file
+        document.title = config.navbar.title;
         // Apply style settings from the config.json file
         const appTitle = document.getElementById('appTitle');
         const mainToolbar = document.getElementById('mainToolbar');
@@ -103,12 +105,13 @@ fetch('config.json')
                 "esri/views/MapView",
                 "esri/layers/FeatureLayer",
                 "esri/layers/TileLayer",
+                'esri/layers/WebTileLayer',
                 "esri/widgets/Track", "esri/Graphic",
                 "esri/layers/GraphicsLayer",
                 "esri/geometry/support/webMercatorUtils",
                 "esri/geometry/Point"
             ],
-            function(esriConfig, Map, MapView, FeatureLayer, TileLayer, Track, Graphic, GraphicsLayer, webMercatorUtils, Point) {
+            function(esriConfig, Map, MapView, FeatureLayer, TileLayer, WebTileLayer, Track, Graphic, GraphicsLayer, webMercatorUtils, Point) {
                 function validateFile(file) {
                     const video = document.createElement('video');
                     video.preload = 'metadata';
@@ -1013,17 +1016,28 @@ fetch('config.json')
                                         tabs.select('home');
                                         const popup = graphics && graphics[parseInt(index, 10)];
 
-                                        map.allLayers.filter(function(layer) {
-                                            if (layer.type === "tile") {
+                                        // Remove existing tile layers
+                                        map.allLayers.forEach(function(layer) {
+                                            if (layer.type === "tile" || layer.type === "web-tile") {
                                                 map.remove(layer);
                                             }
                                         });
 
                                         currentMapUrl = result.attributes.service_url;
 
-                                       current_layer = new TileLayer({
-                                            url: result.attributes.service_url
-                                        });
+                                        let current_layer;
+
+                                        if (currentMapUrl.includes("{z}") && currentMapUrl.includes("{x}") && currentMapUrl.includes("{y}")) {
+                                            // Use WebTileLayer for XYZ tiles
+                                            current_layer = new WebTileLayer({
+                                                urlTemplate: currentMapUrl
+                                            });
+                                        } else {
+                                            // Use TileLayer for Esri services
+                                            current_layer = new TileLayer({
+                                                url: currentMapUrl
+                                            });
+                                        }
 
                                         map.add(current_layer);
 
