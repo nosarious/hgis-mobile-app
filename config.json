@@ -1,18 +1,18 @@
 {
   "map": {
-    "extent": [0,0],
-    "basemap": "topo",
-    "zoom": 2
+    "extent": [-88.5694,47.1211],
+    "basemap": "satellite",
+    "zoom": 10
   },
   "navbar": {
-    "title": "CDMI HGIS Mobile App",
+    "title": "Keweenaw Peninsula Deep Map",
     "backgroundColor": "#285756",
-    "logo": "assets/dmilogo.png",
-    "textColor": "#ffffff"  
+    "logo": "assets/cdmi_logo_alt.png",
+    "textColor": "#5f5f5f"  
   },
   "layers": {
     "storiesLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer/0",
-    "indexLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/KeTT_Mobile_Map_Indexes/FeatureServer/0"
+    "indexLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/Deep_Mapping_Application_Map_Index_Layer/FeatureServer/0"
   },
   "markers": {
     "storyMarkerUrl": "assets/marker_story.png",
