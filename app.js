@@ -804,80 +804,91 @@ fetch('config.json')
 
                 let highlightSelect;
                 // once the view becomes ready
-                view.when(function() {
-                    const queryString = window.location.search;
-                    console.log(queryString);
-                    if (queryString != "") {
-                        splashModal.isOpen = false;
-                        const urlParams = new URLSearchParams(queryString);
-                        const storyId = urlParams.get('id');
-                        const mapid = urlParams.get('map');
-                        console.log(storyId, mapid);
+              view.when(function() {
+                const queryString = window.location.search;
+                console.log(queryString);
+                if (queryString != "") {
+                    splashModal.isOpen = false;
+                    const urlParams = new URLSearchParams(queryString);
+                    const storyId = urlParams.get('id');
+                    const mapid = urlParams.get('map');
+                    console.log(storyId, mapid);
 
-                        const storyQuery = {
-                            where: "objectid =" + "'" + storyId + "'", // Set by select element             
-                            outFields: ["*"], // Attributes to return
-                            returnGeometry: true,
-                            outSpatialReference: 4326
-                        };
+                    const storyQuery = {
+                        where: "objectid ='" + storyId + "'", // Fixed formatting
+                        outFields: ["*"],
+                        returnGeometry: true,
+                        outSpatialReference: 4326
+                    };
 
-                        map.allLayers.filter(function(layer) {
-                            if (layer.type === "tile") {
-                                map.remove(layer);
-                            }
-                        });
+                    // Remove existing tile layers
+                    map.allLayers.forEach(function(layer) {
+                        if (layer.type === "tile" || layer.type === "web-tile") {
+                            map.remove(layer);
+                        }
+                    });
 
-                        if (mapid != "Present" || mapid != null) {
-                            const storyMapLayer = new TileLayer({
+                    let storyMapLayer; 
+                    if (mapid != "Present" || mapid != null) {  // Fixed condition
+                        if (mapid.includes("{z}") && mapid.includes("{x}") && mapid.includes("{y}")) {
+                            // Use WebTileLayer for XYZ tiles
+                            storyMapLayer = new WebTileLayer({
+                                urlTemplate: mapid
+                            });
+                        } else {
+                            // Use TileLayer for Esri services
+                            storyMapLayer = new TileLayer({
                                 url: mapid
                             });
-
-                            map.add(storyMapLayer);
-
-                            // push the current layer to the back
-                            map.reorder(storyMapLayer, 1);
-
-                            // get the value of the range slider  
-                            let rangeVal = $("ion-range").val();
-
-                            storyMapLayer.opacity = rangeVal / 100;
-                            
-                            // const lastEmittedValue = document.querySelector('#lastValue');
-                            // adjust the transparency of the map based on the sliders value  
-                            range.addEventListener('ionInput', ({
-                                detail
-                            }) => {
-                                storyMapLayer.opacity = detail.value / 100;
-                            });
                         }
+                    }       
 
-                        storyLayer.queryFeatures(storyQuery)
-                            .then((results) => {
-                                console.log(results);
-                                view.goTo({
-                                    center: [results.features[0].geometry.x, results.features[0].geometry.y],
-                                    zoom: 19,
-                                    speedFactor: 0.00000000001, // animation is 10 times slower than default
-                                    easing: "out-quint"
-                                });
-
-
-                                // Set a small delay until the story shows up
-                                setTimeout(() => {
-                                    console.log("Delayed for 2 seconds.");
-                                    buildStory(results.features[0]);
-                                }, "2000")
-
-                                view.whenLayerView(storyLayer).then((layerView) => {
-                                    const feature = results.features[0];
-                                    // set the highlight on the first feature returned by the query
-                                    highlightSelect = layerView.highlight(feature.attributes.objectid);
-                                });
-                            }).catch((error) => {
-                                console.log(error.error);
-                            });
+                    if (storyMapLayer) {
+                        map.add(storyMapLayer);
+                        map.reorder(storyMapLayer, 1);
                     }
-                });
+
+                    // Get the value of the range slider  
+                    let rangeVal = document.querySelector("ion-range")?.value || 0;
+                    if (storyMapLayer) {
+                        storyMapLayer.opacity = rangeVal / 100;
+                    }
+
+                    // Adjust transparency of the map based on the slider's value  
+                    range.addEventListener('ionInput', ({ detail }) => {
+                        if (storyMapLayer) {
+                            storyMapLayer.opacity = detail.value / 100;
+                        }
+                    });
+
+                    // Query the story layer
+                    storyLayer.queryFeatures(storyQuery)
+                        .then((results) => {
+                            console.log(results);
+                            view.goTo({
+                                center: [results.features[0].geometry.x, results.features[0].geometry.y],
+                                zoom: 19,
+                                speedFactor: 0.00000000001,
+                                easing: "out-quint"
+                            });
+
+                            // Set a small delay until the story shows up
+                            setTimeout(() => {
+                                console.log("Delayed for 2 seconds.");
+                                buildStory(results.features[0]);
+                            }, 2000); // Fixed timeout
+
+                            view.whenLayerView(storyLayer).then((layerView) => {
+                                const feature = results.features[0];
+                                highlightSelect = layerView.highlight(feature.attributes.objectid);
+                            });
+                        })
+                        .catch((error) => {
+                            console.error(error); // Fixed error logging
+                        });
+                }
+            });
+
 
                 $("#geolocation").click(function() {
                     // track.start();
