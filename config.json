@@ -1,18 +1,18 @@
 {
   "map": {
-    "extent": [0,0],
-    "basemap": "topo",
-    "zoom": 2
+    "extent": [-114.221178,50.579320],
+    "basemap": "satellite",
+    "zoom": 14
   },
   "navbar": {
-    "title": "CDMI HGIS Mobile App",
-    "backgroundColor": "#285756",
+    "title": "Turner Valley Oilfield Mobile App",
+    "backgroundColor": "#006400",
     "logo": "assets/dmilogo.png",
     "textColor": "#ffffff"  
   },
   "layers": {
-    "storiesLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/CDMI_Story_Template_Layer/FeatureServer/0",
-    "indexLayerUrl": "https://portal1-geo.sabu.mtu.edu/server/rest/services/Hosted/KeTT_Mobile_Map_Indexes/FeatureServer/0"
+    "storiesLayerUrl": "https://services2.arcgis.com/XSv3KNGfmrd1txPN/arcgis/rest/services/mercury/FeatureServer/0",
+    "indexLayerUrl": "https://services2.arcgis.com/XSv3KNGfmrd1txPN/arcgis/rest/services/1944_geological_survey/FeatureServer/0"
   },
   "markers": {
     "storyMarkerUrl": "assets/marker_story.png",
