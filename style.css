@@ -61,6 +61,7 @@
       }
       
       ion-range {
+        
         --knob-box-shadow:  0 3px 1px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.13), 0 0 0 1px rgba(0, 0, 0, 0.02);
         --bar-background: #83A1A0;
         --bar-background-active: #d7d8da;
@@ -72,8 +73,16 @@
         --pin-color: #fff;        
         width: 80%;
         position:  absolute;
-        left:  30px;               
+        left:  30px;             
       }
+
+      ion-range::after{
+        margin-left:25px;
+        content: "fade";
+        color: white;
+        font-weight: bold;
+      }
+
 
       .media-label {
         text-align: center;        

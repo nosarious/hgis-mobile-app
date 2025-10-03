@@ -5,9 +5,9 @@
     "zoom": 14
   },
   "navbar": {
-    "title": "Turner Valley Oilfield Mobile App",
+    "title": "Boom, Bust, Repeat Mobile App",
     "backgroundColor": "#006400",
-    "logo": "assets/dmilogo.png",
+    "logo": "assets/BBRlogo.png",
     "textColor": "#ffffff"  
   },
   "layers": {
@@ -21,12 +21,12 @@
   },
   "splashScreen": {
     "visible": true,
-    "title": "HGIS Mobile App",
+    "title": "Boom, Bust, Repeat mobile app",
     "titleColor": "#ffffff",
     "backgroundColor": "#285756",
     "textColor": "#ffffff",
-    "paragraphText": "This is an HGIS Mobile app example. Put information about your app here. HTML tags are accepted.",
-    "image": "assets/cdmibanner.png",
+    "paragraphText": "Boom, Bust, Repeat is a mobile app exploring the unique history of the Turner Valley Oilfield in Foothills County, Alberta. Mobile communities that grew and disappeared alongside the fluctuations of the oilfield with houses shuffled across the landscape following the growth of the petroleum industries.",
+    "image": "assets/BBRlogo.png",
     "navBarColor": "#363636",
     "navBarTextColor": "#ffffff",
     "closeTextColor": "#ffffff"
